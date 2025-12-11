@@ -1,5 +1,5 @@
 // src/components/DetailModal.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../state/CartContext";
 
@@ -7,18 +7,27 @@ export default function DetailModal({ menu, isVisible, onClose }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { inc } = useCart();
+  const historyIndexRef = useRef(null);
 
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true);
       setIsClosing(false);
-      // Add history entry when modal opens
-      window.history.pushState({ modalOpen: true }, '');
+      
+      // Store current history length
+      historyIndexRef.current = window.history.length;
+      
+      // Push a hash state that we can detect
+      window.history.pushState({ modalOpen: true }, '', '#modal');
       
       // Listen for back button/swipe
-      const handlePopState = () => {
-        handleClose();
+      const handlePopState = (e) => {
+        // Only handle if modal is open and we're going back from the modal hash
+        if (window.location.hash !== '#modal') {
+          handleClose();
+        }
       };
+      
       window.addEventListener('popstate', handlePopState);
       
       return () => {

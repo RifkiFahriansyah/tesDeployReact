@@ -41,8 +41,8 @@ export default function Home({ tableNumber }) {
 
   const closeDetail = () => {
     setDetailVisible(false);
-    // Remove the history entry when closing manually
-    if (window.history.state?.modalOpen) {
+    // Clean up the hash if we're closing manually (not from back button)
+    if (window.location.hash === '#modal') {
       window.history.back();
     }
     // Clear selected menu after animation completes
