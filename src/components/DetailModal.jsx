@@ -15,32 +15,22 @@ export default function DetailModal({ menu, isVisible, onClose }) {
       setIsClosing(false);
       
       // Push a new state for the modal
-      const currentUrl = window.location.href;
-      window.history.pushState({ modalOpen: true, returnUrl: currentUrl }, '');
+      window.history.pushState({ modalOpen: true }, '');
       
       // Create handler for back button/swipe
-      popstateHandlerRef.current = (e) => {
-        if (isVisible) {
-          // Prevent going back in history
-          e.preventDefault();
-          
-          // Close modal with animation
-          setIsClosing(true);
-          setTimeout(() => {
-            onClose();
-          }, 280);
-          
-          // Stay on current page by pushing the state back
-          window.history.pushState({ modalClosed: true }, '');
-        }
+      const handlePopState = (e) => {
+        // Close modal with animation but stay on page
+        setIsClosing(true);
+        setTimeout(() => {
+          onClose();
+        }, 280);
       };
       
-      window.addEventListener('popstate', popstateHandlerRef.current);
+      popstateHandlerRef.current = handlePopState;
+      window.addEventListener('popstate', handlePopState);
       
       return () => {
-        if (popstateHandlerRef.current) {
-          window.removeEventListener('popstate', popstateHandlerRef.current);
-        }
+        window.removeEventListener('popstate', handlePopState);
       };
     } else {
       setIsClosing(true);
