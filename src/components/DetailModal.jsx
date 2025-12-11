@@ -2,45 +2,44 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../state/CartContext";
-import { useNavigate } from "react-router-dom";
 
 export default function DetailModal({ menu, isVisible, onClose }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { inc } = useCart();
-  const navigate = useNavigate();
-  const savedHistoryLength = useRef(0);
+  const popstateHandlerRef = useRef(null);
 
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true);
       setIsClosing(false);
       
-      // Save current history state
-      savedHistoryLength.current = window.history.length;
+      // Push a new state for the modal
+      const currentUrl = window.location.href;
+      window.history.pushState({ modalOpen: true, returnUrl: currentUrl }, '');
       
-      // Push modal state
-      window.history.pushState({ isModalOpen: true }, '');
-      
-      // Handle popstate (back button/swipe)
-      const handlePopState = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Close modal with animation
-        handleClose();
-        
-        // Prevent default navigation by pushing forward again
-        window.history.pushState({ isModalOpen: false }, '');
+      // Create handler for back button/swipe
+      popstateHandlerRef.current = (e) => {
+        if (isVisible) {
+          // Prevent going back in history
+          e.preventDefault();
+          
+          // Close modal with animation
+          setIsClosing(true);
+          setTimeout(() => {
+            onClose();
+          }, 280);
+          
+          // Stay on current page by pushing the state back
+          window.history.pushState({ modalClosed: true }, '');
+        }
       };
       
-      window.addEventListener('popstate', handlePopState, true);
+      window.addEventListener('popstate', popstateHandlerRef.current);
       
       return () => {
-        window.removeEventListener('popstate', handlePopState, true);
-        // Clean up if modal unmounts with the extra history entry
-        if (window.history.state?.isModalOpen) {
-          window.history.back();
+        if (popstateHandlerRef.current) {
+          window.removeEventListener('popstate', popstateHandlerRef.current);
         }
       };
     } else {
@@ -49,7 +48,7 @@ export default function DetailModal({ menu, isVisible, onClose }) {
         setIsAnimating(false);
       }, 300);
     }
-  }, [isVisible]);
+  }, [isVisible, onClose]);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
