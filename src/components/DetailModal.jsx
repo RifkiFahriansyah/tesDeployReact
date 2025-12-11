@@ -2,36 +2,46 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "../state/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailModal({ menu, isVisible, onClose }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const { inc } = useCart();
-  const historyIndexRef = useRef(null);
+  const navigate = useNavigate();
+  const savedHistoryLength = useRef(0);
 
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true);
       setIsClosing(false);
       
-      // Store current history length
-      historyIndexRef.current = window.history.length;
+      // Save current history state
+      savedHistoryLength.current = window.history.length;
       
-      // Push a hash state that we can detect
-      window.history.pushState({ modalOpen: true }, '', '#modal');
+      // Push modal state
+      window.history.pushState({ isModalOpen: true }, '');
       
-      // Listen for back button/swipe
+      // Handle popstate (back button/swipe)
       const handlePopState = (e) => {
-        // Only handle if modal is open and we're going back from the modal hash
-        if (window.location.hash !== '#modal') {
-          handleClose();
-        }
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close modal with animation
+        handleClose();
+        
+        // Prevent default navigation by pushing forward again
+        window.history.pushState({ isModalOpen: false }, '');
       };
       
-      window.addEventListener('popstate', handlePopState);
+      window.addEventListener('popstate', handlePopState, true);
       
       return () => {
-        window.removeEventListener('popstate', handlePopState);
+        window.removeEventListener('popstate', handlePopState, true);
+        // Clean up if modal unmounts with the extra history entry
+        if (window.history.state?.isModalOpen) {
+          window.history.back();
+        }
       };
     } else {
       setIsClosing(true);
