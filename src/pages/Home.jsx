@@ -15,8 +15,9 @@ export default function Home({ tableNumber }) {
   const [detailVisible, setDetailVisible] = useState(false);
   const { items, subtotal } = useCart();
   
-  // Handle back button: allow exiting app from home page
-  useBackHandler(true);
+  // Handle back button: close modal if open, otherwise allow exiting app
+  const handleBackButton = detailVisible ? () => closeDetail() : null;
+  useBackHandler(!detailVisible, handleBackButton);
 
   // Calculate total quantity of all items
   const totalQty = useMemo(() => {

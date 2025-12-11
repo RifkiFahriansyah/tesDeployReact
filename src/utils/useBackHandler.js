@@ -5,14 +5,22 @@ import { useNavigate, useLocation } from "react-router-dom";
  * Custom hook to handle browser back button and swipe gestures
  * - On home page: allows default browser behavior (exit to previous site)
  * - On other pages: navigates back within the app
+ * - Can provide custom handler for special cases (e.g., closing modals)
  */
-export function useBackHandler(isHomePage = false) {
+export function useBackHandler(isHomePage = false, customHandler = null) {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const handlePopState = (event) => {
-      // If on home page, let browser handle it naturally (will exit app)
+      // If custom handler provided, use it (e.g., for modal close)
+      if (customHandler && typeof customHandler === 'function') {
+        event.preventDefault();
+        customHandler();
+        return;
+      }
+
+      // If on home page with no custom handler, let browser handle naturally
       if (isHomePage) {
         return;
       }
@@ -28,5 +36,5 @@ export function useBackHandler(isHomePage = false) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [isHomePage, navigate, location]);
+  }, [isHomePage, customHandler, navigate, location]);
 }
