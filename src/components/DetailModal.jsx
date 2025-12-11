@@ -14,21 +14,19 @@ export default function DetailModal({ menu, isVisible, onClose }) {
       setIsAnimating(true);
       setIsClosing(false);
       
-      // First, ensure we have a history entry to go back to
-      // Replace current state to mark we're on home
-      window.history.replaceState({ page: 'home' }, '');
-      
-      // Then push modal state
-      window.history.pushState({ modalOpen: true }, '');
+      // Add a dummy history entry to intercept back button
+      window.history.pushState(null, '');
       
       // Create handler for back button/swipe
       const handlePopState = (e) => {
-        // When back is pressed, browser already went back to home state
-        // Just close modal with animation
+        // Close modal with animation
         setIsClosing(true);
         setTimeout(() => {
           onClose();
         }, 280);
+        
+        // Immediately push another state to stay in place
+        window.history.pushState(null, '');
       };
       
       popstateHandlerRef.current = handlePopState;
@@ -36,6 +34,11 @@ export default function DetailModal({ menu, isVisible, onClose }) {
       
       return () => {
         window.removeEventListener('popstate', handlePopState);
+        // Clean up the dummy state when modal closes
+        const currentState = window.history.state;
+        if (currentState === null) {
+          window.history.back();
+        }
       };
     } else {
       setIsClosing(true);

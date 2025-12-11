@@ -41,10 +41,6 @@ export default function Home({ tableNumber }) {
 
   const closeDetail = () => {
     setDetailVisible(false);
-    // Remove the modal history entry when closing via overlay
-    if (window.history.state?.modalOpen) {
-      window.history.back();
-    }
     // Clear selected menu after animation completes
     setTimeout(() => setSelectedMenu(null), 300);
   };
