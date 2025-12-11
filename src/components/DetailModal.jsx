@@ -14,31 +14,19 @@ export default function DetailModal({ menu, isVisible, onClose }) {
       setIsAnimating(true);
       setIsClosing(false);
       
-      // Add a dummy history entry to intercept back button
-      window.history.pushState(null, '');
+      // Push a state so back button has something to pop
+      window.history.pushState({ modal: true }, '');
       
-      // Create handler for back button/swipe
-      const handlePopState = (e) => {
-        // Close modal with animation
-        setIsClosing(true);
-        setTimeout(() => {
-          onClose();
-        }, 280);
-        
-        // Immediately push another state to stay in place
-        window.history.pushState(null, '');
+      // Handle back button/swipe
+      const handlePopState = () => {
+        // Just close the modal with animation
+        handleClose();
       };
       
-      popstateHandlerRef.current = handlePopState;
       window.addEventListener('popstate', handlePopState);
       
       return () => {
         window.removeEventListener('popstate', handlePopState);
-        // Clean up the dummy state when modal closes
-        const currentState = window.history.state;
-        if (currentState === null) {
-          window.history.back();
-        }
       };
     } else {
       setIsClosing(true);
@@ -46,7 +34,7 @@ export default function DetailModal({ menu, isVisible, onClose }) {
         setIsAnimating(false);
       }, 300);
     }
-  }, [isVisible, onClose]);
+  }, [isVisible]);
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -64,6 +52,10 @@ export default function DetailModal({ menu, isVisible, onClose }) {
   const handleAddOrder = () => {
     inc(menu, 1);
     handleClose();
+    // Remove history entry when closing manually
+    if (window.history.state?.modal) {
+      window.history.back();
+    }
   };
 
   if (!isAnimating && !isVisible) return null;
