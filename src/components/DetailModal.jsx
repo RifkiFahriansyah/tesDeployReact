@@ -14,12 +14,17 @@ export default function DetailModal({ menu, isVisible, onClose }) {
       setIsAnimating(true);
       setIsClosing(false);
       
-      // Push a new state for the modal
+      // First, ensure we have a history entry to go back to
+      // Replace current state to mark we're on home
+      window.history.replaceState({ page: 'home' }, '');
+      
+      // Then push modal state
       window.history.pushState({ modalOpen: true }, '');
       
       // Create handler for back button/swipe
       const handlePopState = (e) => {
-        // Close modal with animation but stay on page
+        // When back is pressed, browser already went back to home state
+        // Just close modal with animation
         setIsClosing(true);
         setTimeout(() => {
           onClose();
