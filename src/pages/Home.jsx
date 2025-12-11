@@ -6,6 +6,7 @@ import MenuCard from "../components/MenuCard";
 import DetailModal from "../components/DetailModal";
 import { useCart } from "../state/CartContext";
 import { fetchMenus } from "../lib/api";
+import { useBackHandler } from "../utils/useBackHandler";
 
 export default function Home({ tableNumber }) {
   const [data, setData] = useState([]);
@@ -13,6 +14,9 @@ export default function Home({ tableNumber }) {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [detailVisible, setDetailVisible] = useState(false);
   const { items, subtotal } = useCart();
+  
+  // Handle back button: allow exiting app from home page
+  useBackHandler(true);
 
   // Calculate total quantity of all items
   const totalQty = useMemo(() => {

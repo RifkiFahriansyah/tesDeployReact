@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../state/CartContext";
 import PhoneShell from "../components/PhoneShell";
+import { useBackHandler } from "../utils/useBackHandler";
 
 export default function Checkout({ tableNumber }) {
   const { items, setQty, remove, subtotal } = useCart();
   const nav = useNavigate();
+  
+  // Handle back button: navigate within app
+  useBackHandler(false);
 
   // Confirmation modal state
   const [confirmDelete, setConfirmDelete] = useState({

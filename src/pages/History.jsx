@@ -5,11 +5,15 @@ import { getCustomerHistory, getUnpaidHistory, cancelOrder } from "../lib/api";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getOrCreateCustomerSession } from "../utils/customerSession";
 import { updateOrderStatus } from "../utils/history";
+import { useBackHandler } from "../utils/useBackHandler";
 
 export default function History() {
   const nav = useNavigate();
   const [params] = useSearchParams();
   const tableNumber = params.get("table") || "1";
+  
+  // Handle back button: navigate within app
+  useBackHandler(false);
   
   const [activeTab, setActiveTab] = useState("paid"); // "paid" or "unpaid"
   const [paidOrders, setPaidOrders] = useState([]);

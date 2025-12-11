@@ -5,12 +5,16 @@ import { fetchMenu } from "../lib/api";
 import { useCart } from "../state/CartContext";
 import PhoneShell from "../components/PhoneShell";
 import StickyDock from "../components/StickyDock";
+import { useBackHandler } from "../utils/useBackHandler";
 
 export default function Detail() {
   const { id } = useParams();
   const nav = useNavigate();
   const [menu, setMenu] = useState(null);
   const { inc } = useCart();
+  
+  // Handle back button: navigate within app
+  useBackHandler(false);
 
   useEffect(() => { fetchMenu(id).then((res) => setMenu(res.data)); }, [id]);
   if (!menu) return <div className="flex items-center justify-center h-screen bg-gray-50">Memuat...</div>;
