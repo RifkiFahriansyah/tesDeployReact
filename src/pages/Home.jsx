@@ -43,6 +43,10 @@ export default function Home({ tableNumber }) {
 
   const closeDetail = () => {
     setDetailVisible(false);
+    // Remove the history entry we added when opening modal
+    if (window.history.state?.modalOpen) {
+      window.history.back();
+    }
     // Clear selected menu after animation completes
     setTimeout(() => setSelectedMenu(null), 300);
   };
@@ -51,8 +55,9 @@ export default function Home({ tableNumber }) {
   useEffect(() => {
     const handlePopState = (event) => {
       if (detailVisible) {
-        // If modal is open, close it instead of navigating
-        closeDetail();
+        // If modal is open, close it with animation (don't call history.back again)
+        setDetailVisible(false);
+        setTimeout(() => setSelectedMenu(null), 300);
       }
     };
 
