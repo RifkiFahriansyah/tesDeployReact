@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../state/CartContext";
 
-export default function MenuCard({ menu, tableNumber, onOpenDetail }) {
+export default function MenuCard({ menu, onOpenDetail }) {
   const { qtyOf, inc, dec } = useCart();
   const qty = qtyOf(menu.id);
 
@@ -30,40 +30,43 @@ export default function MenuCard({ menu, tableNumber, onOpenDetail }) {
 
       {/* Menu Info */}
       <div className="flex-1 flex flex-col">
-        <div className="text-sm font-bold text-white mb-1 leading-snug pointer-events-none">
+        {/* Fixed height for menu name to keep cards aligned */}
+        <div className="text-sm font-bold text-white mb-1 leading-snug pointer-events-none h-[40px] overflow-hidden line-clamp-2">
           {menu.name}
         </div>
         <div className="text-[13px] font-semibold text-yellow-400 mb-2">
           Rp {Number(menu.price).toLocaleString()}
         </div>
 
-        {/* Add Button or Quantity Controls */}
-        {qty === 0 ? (
-          <button
-            className="menu-add-btn w-full py-2 bg-orange text-white rounded-[10px] text-[13px] font-semibold hover:bg-orange-dark hover:scale-[1.02] transition-all pointer-events-auto relative z-[2]"
-            onClick={() => inc(menu, 1)}
-          >
-            Tambah +
-          </button>
-        ) : (
-          <div className="menu-qty-controls flex items-center justify-between bg-white rounded-[10px] py-1 px-1.5 pointer-events-auto relative z-[2]">
+        {/* Add Button or Quantity Controls - pushed to bottom */}
+        <div className="mt-auto">
+          {qty === 0 ? (
             <button
-              className="menu-qty-btn w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-base font-semibold flex items-center justify-center transition-all active:scale-95 pointer-events-auto"
-              onClick={() => dec(menu.id, 1)}
-              aria-label="decrease"
-            >
-              −
-            </button>
-            <span className="text-sm font-bold text-gray-900 min-w-[30px] text-center">{qty}</span>
-            <button
-              className="menu-qty-btn w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-base font-semibold flex items-center justify-center transition-all active:scale-95 pointer-events-auto"
+              className="menu-add-btn w-full py-2 bg-orange text-white rounded-[10px] text-[13px] font-semibold hover:bg-orange-dark hover:scale-[1.02] transition-all pointer-events-auto relative z-[2]"
               onClick={() => inc(menu, 1)}
-              aria-label="increase"
             >
-              +
+              Tambah +
             </button>
-          </div>
-        )}
+          ) : (
+            <div className="menu-qty-controls flex items-center justify-between bg-white rounded-[10px] py-1 px-1.5 pointer-events-auto relative z-[2]">
+              <button
+                className="menu-qty-btn w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-base font-semibold flex items-center justify-center transition-all active:scale-95 pointer-events-auto"
+                onClick={() => dec(menu.id, 1)}
+                aria-label="decrease"
+              >
+                −
+              </button>
+              <span className="text-sm font-bold text-gray-900 min-w-[30px] text-center">{qty}</span>
+              <button
+                className="menu-qty-btn w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-base font-semibold flex items-center justify-center transition-all active:scale-95 pointer-events-auto"
+                onClick={() => inc(menu, 1)}
+                aria-label="increase"
+              >
+                +
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
