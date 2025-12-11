@@ -6,7 +6,6 @@ import MenuCard from "../components/MenuCard";
 import DetailModal from "../components/DetailModal";
 import { useCart } from "../state/CartContext";
 import { fetchMenus } from "../lib/api";
-import { useBackHandler } from "../utils/useBackHandler";
 
 export default function Home({ tableNumber }) {
   const [data, setData] = useState([]);
@@ -14,10 +13,6 @@ export default function Home({ tableNumber }) {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [detailVisible, setDetailVisible] = useState(false);
   const { items, subtotal } = useCart();
-  
-  // Handle back button: close modal if open, otherwise allow exiting app
-  const handleBackButton = detailVisible ? () => closeDetail() : null;
-  useBackHandler(!detailVisible, handleBackButton);
 
   // Calculate total quantity of all items
   const totalQty = useMemo(() => {
@@ -42,6 +37,8 @@ export default function Home({ tableNumber }) {
   const openDetail = (menu) => {
     setSelectedMenu(menu);
     setDetailVisible(true);
+    // Push a new history state when modal opens
+    window.history.pushState({ modalOpen: true }, '');
   };
 
   const closeDetail = () => {
@@ -49,6 +46,22 @@ export default function Home({ tableNumber }) {
     // Clear selected menu after animation completes
     setTimeout(() => setSelectedMenu(null), 300);
   };
+
+  // Handle browser back button when modal is open
+  useEffect(() => {
+    const handlePopState = (event) => {
+      if (detailVisible) {
+        // If modal is open, close it instead of navigating
+        closeDetail();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [detailVisible]);
 
   return (
     <PhoneShell noHeader noFooter showBottomNav>
