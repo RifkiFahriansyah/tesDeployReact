@@ -12,6 +12,18 @@ export default function DetailModal({ menu, isVisible, onClose }) {
     if (isVisible) {
       setIsAnimating(true);
       setIsClosing(false);
+      // Add history entry when modal opens
+      window.history.pushState({ modalOpen: true }, '');
+      
+      // Listen for back button/swipe
+      const handlePopState = () => {
+        handleClose();
+      };
+      window.addEventListener('popstate', handlePopState);
+      
+      return () => {
+        window.removeEventListener('popstate', handlePopState);
+      };
     } else {
       setIsClosing(true);
       setTimeout(() => {

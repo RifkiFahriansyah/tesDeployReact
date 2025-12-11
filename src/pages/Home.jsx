@@ -37,36 +37,17 @@ export default function Home({ tableNumber }) {
   const openDetail = (menu) => {
     setSelectedMenu(menu);
     setDetailVisible(true);
-    // Push a new history state when modal opens
-    window.history.pushState({ modalOpen: true }, '');
   };
 
   const closeDetail = () => {
     setDetailVisible(false);
-    // Remove the history entry we added when opening modal
+    // Remove the history entry when closing manually
     if (window.history.state?.modalOpen) {
       window.history.back();
     }
     // Clear selected menu after animation completes
     setTimeout(() => setSelectedMenu(null), 300);
   };
-
-  // Handle browser back button when modal is open
-  useEffect(() => {
-    const handlePopState = (event) => {
-      if (detailVisible) {
-        // If modal is open, close it with animation (don't call history.back again)
-        setDetailVisible(false);
-        setTimeout(() => setSelectedMenu(null), 300);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [detailVisible]);
 
   return (
     <PhoneShell noHeader noFooter showBottomNav>
