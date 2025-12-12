@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Height normalization for consistent viewport calculations */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Global scrollbar hiding */
-html, body { overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none; }
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
 html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 body { overflow-x: hidden !important; }
 *::-webkit-scrollbar { display: none; }
