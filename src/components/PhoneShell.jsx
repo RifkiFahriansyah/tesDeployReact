@@ -51,8 +51,8 @@ export default function PhoneShell({
   }, [isMobile]);
 
   return (
-    <div className="min-h-screen w-full bg-gray-100 flex items-center justify-center overflow-hidden">
-      <div className={`${isMobile ? 'w-full h-full min-h-screen' : 'w-[430px] h-[749px]'} mx-auto bg-transparent relative`}>
+    <div className={`${isMobile ? 'fixed inset-0' : 'min-h-screen w-full'} bg-gray-100 flex items-center justify-center overflow-hidden`}>
+      <div className={`${isMobile ? 'w-full h-full' : 'w-[430px] h-[749px]'} mx-auto bg-transparent relative`}>
         <div className={`w-full h-full ${isMobile ? '' : 'rounded-[28px]'} overflow-hidden bg-white`}>
           <div 
             className="phone relative w-full h-full bg-white overflow-hidden"
