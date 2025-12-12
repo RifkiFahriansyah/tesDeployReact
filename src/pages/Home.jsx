@@ -71,19 +71,13 @@ export default function Home({ tableNumber }) {
 
         {/* RESTAURANT INFO CARD */}
         <div className="mx-4 mb-4 bg-white rounded-[28px] shadow-[0_6px_20px_rgba(0,0,0,0.12)] p-5 relative z-10">
-          <div className="flex items-center justify-between">
-            <div>
-              <h5 className="text-lg font-bold text-gray-900 mb-1">Cobek Bakar Mas Agus</h5>
-              <p className="text-xs text-gray-500 leading-relaxed">
-                Jl. Mayor HM Rasyad Nawawi No. 56115 Palembang, Sumatera Selatan<br />
-                Buka: 10:00 - 22:00
-              </p>
-            </div>
-            <button className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-gray-600">
-                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+          <div>
+            <h5 className="text-lg font-bold text-gray-900 mb-1">Cobek Bakar Mas Agus</h5>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              Jl. Mayor HM Rasyad Nawawi No. 56115<br />
+              Palembang, Sumatera Selatan<br />
+              Buka: 10:00 - 22:00
+            </p>
           </div>
         </div>
 
