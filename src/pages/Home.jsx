@@ -55,10 +55,10 @@ export default function Home({ tableNumber }) {
             className="w-full h-full object-cover brightness-[0.7]"
           />
           <div className="absolute inset-0 flex items-center justify-between px-5">
-            <div className="flex-1">
+            <div className="flex-5 pr-6 -mt-4">
               <div className="text-[32px] font-black text-white uppercase leading-[0.95] tracking-tight drop-shadow-[3px_3px_6px_rgba(0,0,0,0.6)] mb-1">COBEK BAKAR</div>
-              <div className="text-[32px] font-black text-white uppercase leading-[0.95] tracking-tight drop-shadow-[3px_3px_6px_rgba(0,0,0,0.6)] mb-1">GURAME</div>
-              <div className="text-[32px] font-black text-white uppercase leading-[0.95] tracking-tight drop-shadow-[3px_3px_6px_rgba(0,0,0,0.6)]">COBEK</div>
+              <div className="text-[32px] font-black text-white uppercase leading-[0.95] tracking-tight drop-shadow-[3px_3px_6px_rgba(0,0,0,0.6)] mb-1">MAS</div>
+              <div className="text-[32px] font-black text-white uppercase leading-[0.95] tracking-tight drop-shadow-[3px_3px_6px_rgba(0,0,0,0.6)]">AGUS</div>
             </div>
             <div className="w-15 h-15 rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.3)] flex items-center justify-center flex-shrink-0">
               <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -73,9 +73,9 @@ export default function Home({ tableNumber }) {
         <div className="mx-4 mb-4 bg-white rounded-[28px] shadow-[0_6px_20px_rgba(0,0,0,0.12)] p-5 relative z-10">
           <div className="flex items-center justify-between">
             <div>
-              <h5 className="text-lg font-bold text-gray-900 mb-1">Cobek Bakar Gurame</h5>
+              <h5 className="text-lg font-bold text-gray-900 mb-1">Cobek Bakar Mas Agus</h5>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Jl. Raya Cobek No. 123, Jakarta<br />
+                Jl. Mayor HM Rasyad Nawawi No. 56115 Palembang, Sumatera Selatan<br />
                 Buka: 10:00 - 22:00
               </p>
             </div>
